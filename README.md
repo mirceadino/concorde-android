@@ -1,7 +1,5 @@
-# concorde 
+# concorde-android
 :airplane: faster than the speed of sound
-
-**Android version**
 
 **Features:**
 - create an account
