@@ -1,4 +1,4 @@
-package com.ubb.mirko.concorde;
+package com.ubb.mirko.concorde.ui;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.ubb.mirko.concorde.R;
 import com.ubb.mirko.concorde.model.Flight;
 
 public class EditFlightActivity extends AppCompatActivity {
@@ -16,6 +17,7 @@ public class EditFlightActivity extends AppCompatActivity {
     private EditText editText_destination;
     private EditText editText_price;
     private Button button_edit;
+    private Button button_delete;
     private int flightId;
 
     @Override
@@ -32,9 +34,10 @@ public class EditFlightActivity extends AppCompatActivity {
         editText_destination = (EditText) findViewById(R.id.editFlight_destination);
         editText_price = (EditText) findViewById(R.id.editFlight_price);
         button_edit = (Button) findViewById(R.id.editFlight_button_edit);
+        button_delete = (Button) findViewById(R.id.editFlight_button_delete);
 
         // Get flight from intent.
-        Flight flight = (Flight) getIntent().getExtras().getSerializable("flight");
+        Flight flight = (Flight) getIntent().getExtras().getSerializable("currentFlight");
         System.out.println(flight.toString());
 
         // Fill the layout with the information from intent.
@@ -50,7 +53,7 @@ public class EditFlightActivity extends AppCompatActivity {
 
                 // Intent to modify the flight.
                 Intent modifyIntent = new Intent(EditFlightActivity.this, FlightsActivity.class);
-                modifyIntent.putExtra("modifiedFlight", flight);
+                modifyIntent.putExtra("addedFlight", flight);
                 startActivity(modifyIntent);
 
                 // Intent to send an email.
@@ -63,6 +66,19 @@ public class EditFlightActivity extends AppCompatActivity {
                 sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
                 sendMailIntent.putExtra(Intent.EXTRA_TEXT, body);
                 startActivity(sendMailIntent);
+            }
+        });
+
+        button_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Get the modified flight.
+                Flight flight = getEditedFlight();
+
+                // Intent to modify the flight.
+                Intent deleteIntent = new Intent(EditFlightActivity.this, FlightsActivity.class);
+                deleteIntent.putExtra("deletedFlight", flight);
+                startActivity(deleteIntent);
             }
         });
     }

@@ -12,81 +12,59 @@ import android.widget.EditText;
 import com.ubb.mirko.concorde.R;
 import com.ubb.mirko.concorde.model.Flight;
 
-public class EditFlightActivity extends AppCompatActivity {
-    private EditText editText_source;
-    private EditText editText_destination;
-    private EditText editText_price;
-    private Button button_edit;
-    private Button button_delete;
-    private int flightId;
+public class AddFlightActivity extends AppCompatActivity {
+    private EditText addText_source;
+    private EditText addText_destination;
+    private EditText addText_price;
+    private Button button_add;
+    private Button button_cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_flight);
+        setContentView(R.layout.activity_add_flight);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Get edit texts and buttons from layout.
-        editText_source = (EditText) findViewById(R.id.editFlight_source);
-        editText_destination = (EditText) findViewById(R.id.editFlight_destination);
-        editText_price = (EditText) findViewById(R.id.editFlight_price);
-        button_edit = (Button) findViewById(R.id.editFlight_button_edit);
-        button_delete = (Button) findViewById(R.id.editFlight_button_delete);
-
-        // Get flight from intent.
-        Flight flight = (Flight) getIntent().getExtras().getSerializable("flight");
-        System.out.println(flight.toString());
+        // Get add texts and buttons from layout.
+        addText_source = (EditText) findViewById(R.id.addFlight_source);
+        addText_destination = (EditText) findViewById(R.id.addFlight_destination);
+        addText_price = (EditText) findViewById(R.id.addFlight_price);
+        button_add = (Button) findViewById(R.id.addFlight_button_add);
+        button_cancel = (Button) findViewById(R.id.addFlight_button_cancel);
 
         // Fill the layout with the information from intent.
-        flightId = flight.getId();
-        editText_source.setText(flight.getSource());
-        editText_destination.setText(flight.getDestination());
-        editText_price.setText("" + flight.getPrice());
-        button_edit.setOnClickListener(new View.OnClickListener() {
+        // addText_source.setText(flight.getSource());
+        // addText_destination.setText(flight.getDestination());
+        // addText_price.setText("" + flight.getPrice());
+        button_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Get the modified flight.
-                Flight flight = getEditedFlight();
+                Flight flight = getAddedFlight();
 
                 // Intent to modify the flight.
-                Intent modifyIntent = new Intent(EditFlightActivity.this, FlightsActivity.class);
-                modifyIntent.putExtra("modifiedFlight", flight);
+                Intent modifyIntent = new Intent(AddFlightActivity.this, FlightsActivity.class);
+                modifyIntent.putExtra("addedFlight", flight);
                 startActivity(modifyIntent);
-
-                // Intent to send an email.
-                String address = "mirceadino97@gmail.com";
-                String subject = "Flight was modified";
-                String body = "Flight #" + flight.getId() + " is now from " +
-                        flight.getSource() + " to " + flight.getDestination() + " for $" +
-                        flight.getPrice() + ".";
-                Intent sendMailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + Uri.encode(address)));
-                sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-                sendMailIntent.putExtra(Intent.EXTRA_TEXT, body);
-                startActivity(sendMailIntent);
             }
         });
 
-        button_delete.setOnClickListener(new View.OnClickListener() {
+        button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get the modified flight.
-                Flight flight = getEditedFlight();
-
-                // Intent to modify the flight.
-                Intent deleteIntent = new Intent(EditFlightActivity.this, FlightsActivity.class);
-                deleteIntent.putExtra("deletedFlight", flight);
-                startActivity(deleteIntent);
+                Intent cancelIntent = new Intent(AddFlightActivity.this, FlightsActivity.class);
+                startActivity(cancelIntent);
             }
         });
     }
 
-    protected Flight getEditedFlight() {
-        String source = String.valueOf(editText_source.getText());
-        String destination = String.valueOf(editText_destination.getText());
-        int price = Integer.parseInt(String.valueOf(editText_price.getText()));
-        return new Flight(flightId, source, destination, price);
+    protected Flight getAddedFlight() {
+        String source = String.valueOf(addText_source.getText());
+        String destination = String.valueOf(addText_destination.getText());
+        int price = Integer.parseInt(String.valueOf(addText_price.getText()));
+        return new Flight(-1, source, destination, price);
     }
 }

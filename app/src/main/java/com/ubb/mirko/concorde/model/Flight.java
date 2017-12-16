@@ -19,6 +19,13 @@ public class Flight implements Serializable {
         this.price = price;
     }
 
+    public void cloneFrom(Flight that) {
+        this.id = that.id;
+        this.source = that.source;
+        this.destination = that.destination;
+        this.price = that.price;
+    }
+
     public int getId() {
         return id;
     }

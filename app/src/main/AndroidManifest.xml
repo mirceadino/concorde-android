@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -20,22 +20,31 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FlightsActivity"
+            android:name=".ui.FlightsActivity"
             android:label="@string/title_activity_flights"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ubb.mirko.concorde.MainActivity" />
+                android:value="com.ubb.mirko.concorde.ui.MainActivity" />
         </activity>
         <activity
-            android:name=".EditFlightActivity"
+            android:name=".ui.EditFlightActivity"
             android:label="@string/title_activity_edit_flight"
-            android:parentActivityName=".FlightsActivity"
+            android:parentActivityName=".ui.FlightsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ubb.mirko.concorde.FlightsActivity" />
+                android:value="com.ubb.mirko.concorde.ui.FlightsActivity" />
+        </activity>
+        <activity
+            android:name=".ui.AddFlightActivity"
+            android:label="@string/title_activity_add_flight"
+            android:parentActivityName=".ui.FlightsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ubb.mirko.concorde.ui.FlightsActivity" />
         </activity>
     </application>
 

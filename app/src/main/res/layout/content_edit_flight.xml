@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.ubb.mirko.concorde.EditFlightActivity"
+    tools:context="com.ubb.mirko.concorde.ui.EditFlightActivity"
     tools:showIn="@layout/activity_edit_flight">
 
     <LinearLayout
@@ -57,6 +57,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Finish editing" />
+
+        <Button
+            android:id="@+id/editFlight_button_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete flight"
+            android:background="@color/colorDangerDark"/>
 
     </LinearLayout>
 

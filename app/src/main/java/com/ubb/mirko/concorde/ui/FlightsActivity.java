@@ -1,5 +1,6 @@
-package com.ubb.mirko.concorde;
+package com.ubb.mirko.concorde.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,8 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.ubb.mirko.concorde.R;
+import com.ubb.mirko.concorde.controller.FlightController;
 import com.ubb.mirko.concorde.model.Flight;
-import com.ubb.mirko.concorde.model.FlightInMemoryDataset;
 
 public class FlightsActivity extends AppCompatActivity {
 
@@ -25,12 +27,13 @@ public class FlightsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // This button adds flights.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "You can't add a new flight yet", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent myIntent = new Intent(FlightsActivity.this, AddFlightActivity.class);
+                startActivity(myIntent);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -43,17 +46,22 @@ public class FlightsActivity extends AppCompatActivity {
         recyclerView_flights_.setLayoutManager(recyclerView_flights_layoutManager);
 
         // Initialize dataset.
-        FlightInMemoryDataset dataset = FlightInMemoryDataset.getInstance();
+        FlightController flightController = FlightController.getInstance();
 
-        // Get modified flight if that's the case and modify the flight.
-        if (getIntent().hasExtra("modifiedFlight")) {
-            Flight modifiedFlight = (Flight) getIntent().getExtras().getSerializable("modifiedFlight");
-            System.out.println(modifiedFlight);
-            dataset.addFlight(modifiedFlight);
+        // Get modified/added/removed flight if that's the case and modify/add/remove the flight.
+        if (getIntent().hasExtra("addedFlight")) {
+            Flight addedFlight = (Flight) getIntent().getExtras().getSerializable("addedFlight");
+            System.out.println(addedFlight);
+            flightController.addFlight(addedFlight);
+
+        } else if (getIntent().hasExtra("deletedFlight")) {
+            Flight deletedFlight = (Flight) getIntent().getExtras().getSerializable("deletedFlight");
+            System.out.println(deletedFlight);
+            flightController.removeFlight(deletedFlight);
         }
 
         // specify an adapter
-        recyclerView_flights_adapter = new FlightsAdapter(dataset.getDataset(), this);
+        recyclerView_flights_adapter = new FlightsAdapter(flightController.getAllFlights(), this);
         recyclerView_flights_.setAdapter(recyclerView_flights_adapter);
     }
 }

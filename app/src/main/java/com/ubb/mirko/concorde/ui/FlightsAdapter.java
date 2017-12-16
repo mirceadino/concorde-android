@@ -1,18 +1,16 @@
-package com.ubb.mirko.concorde;
+package com.ubb.mirko.concorde.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ubb.mirko.concorde.R;
 import com.ubb.mirko.concorde.model.Flight;
 
 import java.util.List;
@@ -55,7 +53,7 @@ class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     Intent myIntent = new Intent(context_, EditFlightActivity.class);
-                    myIntent.putExtra("flight", f);
+                    myIntent.putExtra("currentFlight", f);
                     // TODO: startActivityWithResult
                     context_.startActivity(myIntent);
                 }
