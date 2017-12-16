@@ -56,6 +56,7 @@ class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHolder> {
                 public void onClick(View view) {
                     Intent myIntent = new Intent(context_, EditFlightActivity.class);
                     myIntent.putExtra("flight", f);
+                    // TODO: startActivityWithResult
                     context_.startActivity(myIntent);
                 }
             });
