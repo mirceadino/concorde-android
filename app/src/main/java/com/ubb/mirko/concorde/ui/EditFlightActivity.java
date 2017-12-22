@@ -1,13 +1,16 @@
 package com.ubb.mirko.concorde.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 
 import com.ubb.mirko.concorde.R;
 import com.ubb.mirko.concorde.model.Flight;
@@ -15,7 +18,7 @@ import com.ubb.mirko.concorde.model.Flight;
 public class EditFlightActivity extends AppCompatActivity {
     private EditText editText_source;
     private EditText editText_destination;
-    private EditText editText_price;
+    private NumberPicker numberPicker_pricePicker;
     private Button button_edit;
     private Button button_delete;
     private int flightId;
@@ -32,7 +35,7 @@ public class EditFlightActivity extends AppCompatActivity {
         // Get edit texts and buttons from layout.
         editText_source = (EditText) findViewById(R.id.editFlight_source);
         editText_destination = (EditText) findViewById(R.id.editFlight_destination);
-        editText_price = (EditText) findViewById(R.id.editFlight_price);
+        numberPicker_pricePicker = (NumberPicker) findViewById(R.id.editFlight_pricePicker);
         button_edit = (Button) findViewById(R.id.editFlight_button_edit);
         button_delete = (Button) findViewById(R.id.editFlight_button_delete);
 
@@ -44,7 +47,10 @@ public class EditFlightActivity extends AppCompatActivity {
         flightId = flight.getId();
         editText_source.setText(flight.getSource());
         editText_destination.setText(flight.getDestination());
-        editText_price.setText("" + flight.getPrice());
+        numberPicker_pricePicker.setMinValue(0);
+        numberPicker_pricePicker.setMaxValue(300);
+        numberPicker_pricePicker.setValue(flight.getPrice());
+        numberPicker_pricePicker.setWrapSelectorWheel(true);
         button_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,7 +58,7 @@ public class EditFlightActivity extends AppCompatActivity {
                 Flight flight = getEditedFlight();
 
                 // Intent to modify the flight.
-                Intent modifyIntent = new Intent(EditFlightActivity.this, FlightsActivity.class);
+                Intent modifyIntent = new Intent(EditFlightActivity.this, ManageFlightsActivity.class);
                 modifyIntent.putExtra("addedFlight", flight);
                 startActivity(modifyIntent);
 
@@ -72,13 +78,27 @@ public class EditFlightActivity extends AppCompatActivity {
         button_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get the modified flight.
-                Flight flight = getEditedFlight();
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setCancelable(true);
+                builder.setMessage("Are you sure you want to delete?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Get the modified flight.
+                                Flight flight = getEditedFlight();
 
-                // Intent to modify the flight.
-                Intent deleteIntent = new Intent(EditFlightActivity.this, FlightsActivity.class);
-                deleteIntent.putExtra("deletedFlight", flight);
-                startActivity(deleteIntent);
+                                // Intent to modify the flight.
+                                Intent deleteIntent = new Intent(EditFlightActivity.this, ManageFlightsActivity.class);
+                                deleteIntent.putExtra("deletedFlight", flight);
+                                startActivity(deleteIntent);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
     }
@@ -86,7 +106,7 @@ public class EditFlightActivity extends AppCompatActivity {
     protected Flight getEditedFlight() {
         String source = String.valueOf(editText_source.getText());
         String destination = String.valueOf(editText_destination.getText());
-        int price = Integer.parseInt(String.valueOf(editText_price.getText()));
+        int price = numberPicker_pricePicker.getValue();
         return new Flight(flightId, source, destination, price);
     }
 }

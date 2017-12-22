@@ -36,9 +36,6 @@ public class AddFlightActivity extends AppCompatActivity {
         button_cancel = (Button) findViewById(R.id.addFlight_button_cancel);
 
         // Fill the layout with the information from intent.
-        // addText_source.setText(flight.getSource());
-        // addText_destination.setText(flight.getDestination());
-        // addText_price.setText("" + flight.getPrice());
         button_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,7 +43,7 @@ public class AddFlightActivity extends AppCompatActivity {
                 Flight flight = getAddedFlight();
 
                 // Intent to modify the flight.
-                Intent modifyIntent = new Intent(AddFlightActivity.this, FlightsActivity.class);
+                Intent modifyIntent = new Intent(AddFlightActivity.this, ManageFlightsActivity.class);
                 modifyIntent.putExtra("addedFlight", flight);
                 startActivity(modifyIntent);
             }
@@ -55,7 +52,7 @@ public class AddFlightActivity extends AppCompatActivity {
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent cancelIntent = new Intent(AddFlightActivity.this, FlightsActivity.class);
+                Intent cancelIntent = new Intent(AddFlightActivity.this, ManageFlightsActivity.class);
                 startActivity(cancelIntent);
             }
         });

@@ -29,17 +29,35 @@
                 android:value="com.ubb.mirko.concorde.ui.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.EditFlightActivity"
-            android:label="@string/title_activity_edit_flight"
-            android:parentActivityName=".ui.FlightsActivity"
+            android:name=".ui.ManageFlightsActivity"
+            android:label="@string/title_activity_manage_flights"
+            android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ubb.mirko.concorde.ui.FlightsActivity" />
+                android:value="com.ubb.mirko.concorde.ui.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.EditFlightActivity"
+            android:label="@string/title_activity_edit_flight"
+            android:parentActivityName=".ui.ManageFlightsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ubb.mirko.concorde.ui.ManageFlightsActivity" />
         </activity>
         <activity
             android:name=".ui.AddFlightActivity"
             android:label="@string/title_activity_add_flight"
+            android:parentActivityName=".ui.ManageFlightsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ubb.mirko.concorde.ui.ManageFlightsActivity" />
+        </activity>
+        <activity
+            android:name=".ui.DetailsFlightActivity"
+            android:label="@string/title_activity_details_flight"
             android:parentActivityName=".ui.FlightsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

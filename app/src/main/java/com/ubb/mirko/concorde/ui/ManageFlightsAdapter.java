@@ -19,7 +19,7 @@ import java.util.List;
  * Created by mirko on 12/11/2017.
  */
 
-class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHolder> {
+class ManageFlightsAdapter extends RecyclerView.Adapter<ManageFlightsAdapter.ViewHolder> {
     private List<Flight> dataset_;
     private Context context_;
 
@@ -33,7 +33,7 @@ class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHolder> {
         public TextView textView_source;
         public TextView textView_destination;
         public TextView textView_price;
-        public Button button_details;
+        public Button button_edit;
 
         public ViewHolder(View v, Context context) {
             super(v);
@@ -41,7 +41,7 @@ class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHolder> {
             textView_source = (TextView) v.findViewById(R.id.cardView_flights_source);
             textView_destination = (TextView) v.findViewById(R.id.cardView_flights_destination);
             textView_price = (TextView) v.findViewById(R.id.cardView_flights_price);
-            button_details = (Button) v.findViewById(R.id.cardView_flights_button_detailsFlight);
+            button_edit = (Button) v.findViewById(R.id.cardView_flights_button_editFlight);
             context_ = context;
         }
 
@@ -49,10 +49,10 @@ class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHolder> {
             textView_source.setText(f.getSource());
             textView_destination.setText("to " + f.getDestination());
             textView_price.setText("$" + Double.toString(f.getPrice()));
-            button_details.setOnClickListener(new View.OnClickListener() {
+            button_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent myIntent = new Intent(context_, DetailsFlightActivity.class);
+                    Intent myIntent = new Intent(context_, EditFlightActivity.class);
                     myIntent.putExtra("currentFlight", f);
                     // TODO: startActivityWithResult
                     context_.startActivity(myIntent);
@@ -62,18 +62,18 @@ class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public FlightsAdapter(List<Flight> dataset, Context context) {
+    public ManageFlightsAdapter(List<Flight> dataset, Context context) {
         dataset_ = dataset;
         context_ = context;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public FlightsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                        int viewType) {
+    public ManageFlightsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                              int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.view_flight, parent, false);
+                .inflate(R.layout.view_manage_flight, parent, false);
         // set the view's size, margins, paddings and layout parameters
         // ...
         ViewHolder vh = new ViewHolder(v, context_);
