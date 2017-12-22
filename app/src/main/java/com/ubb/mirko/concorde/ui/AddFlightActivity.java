@@ -1,6 +1,7 @@
 package com.ubb.mirko.concorde.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -45,6 +46,17 @@ public class AddFlightActivity extends AppCompatActivity {
                 Intent modifyIntent = new Intent(AddFlightActivity.this, ManageFlightsActivity.class);
                 modifyIntent.putExtra("addedFlight", flight);
                 startActivity(modifyIntent);
+
+                // Intent to send an email.
+                String address = "mirceadino97@gmail.com";
+                String subject = "New flight on Concorde";
+                String body = "Flight #" + flight.getId() + " was added from" +
+                        flight.getSource() + " to " + flight.getDestination() + " for $" +
+                        flight.getLastPrice() + ".";
+                Intent sendMailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + Uri.encode(address)));
+                sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                sendMailIntent.putExtra(Intent.EXTRA_TEXT, body);
+                startActivity(sendMailIntent);
             }
         });
 

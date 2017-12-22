@@ -64,17 +64,6 @@ public class EditFlightActivity extends AppCompatActivity {
                 Intent modifyIntent = new Intent(EditFlightActivity.this, ManageFlightsActivity.class);
                 modifyIntent.putExtra("addedFlight", flight);
                 startActivity(modifyIntent);
-
-                // Intent to send an email.
-                String address = "mirceadino97@gmail.com";
-                String subject = "Flight was modified";
-                String body = "Flight #" + flight.getId() + " is now from " +
-                        flight.getSource() + " to " + flight.getDestination() + " for $" +
-                        flight.getLastPrice() + ".";
-                Intent sendMailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + Uri.encode(address)));
-                sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-                sendMailIntent.putExtra(Intent.EXTRA_TEXT, body);
-                startActivity(sendMailIntent);
             }
         });
 
