@@ -50,7 +50,7 @@ public class ManageFlightsActivity extends AppCompatActivity {
         // Get modified/added/removed flight if that's the case and modify/add/remove the flight.
         if (getIntent().hasExtra("addedFlight")) {
             Flight addedFlight = (Flight) getIntent().getExtras().getSerializable("addedFlight");
-            System.out.println(addedFlight);
+            System.out.println("Added flight: " + addedFlight);
             flightController.addFlight(addedFlight);
 
         } else if (getIntent().hasExtra("deletedFlight")) {

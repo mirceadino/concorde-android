@@ -3,6 +3,7 @@ package com.ubb.mirko.concorde.ui;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -13,8 +14,12 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.ubb.mirko.concorde.R;
 import com.ubb.mirko.concorde.model.Flight;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DetailsFlightActivity extends AppCompatActivity {
     private EditText detailsText_source;
@@ -23,6 +28,7 @@ public class DetailsFlightActivity extends AppCompatActivity {
     private GraphView graphView_graph;
     private Button button_cancel;
     private int flightId;
+    private Flight currentFlight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +47,14 @@ public class DetailsFlightActivity extends AppCompatActivity {
         button_cancel = (Button) findViewById(R.id.detailsFlight_button_cancel);
 
         // Get flight from intent.
-        Flight flight = (Flight) getIntent().getExtras().getSerializable("currentFlight");
-        System.out.println(flight.toString());
+        currentFlight = (Flight) getIntent().getExtras().getSerializable("currentFlight");
+        System.out.println(currentFlight.toString());
 
         // Fill the layout with the information from intent.
-        flightId = flight.getId();
-        detailsText_source.setText(flight.getSource());
-        detailsText_destination.setText(flight.getDestination());
-        detailsText_price.setText("" + flight.getPrice());
+        flightId = currentFlight.getId();
+        detailsText_source.setText(currentFlight.getSource());
+        detailsText_destination.setText(currentFlight.getDestination());
+        detailsText_price.setText("" + currentFlight.getPrice());
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,29 +66,15 @@ public class DetailsFlightActivity extends AppCompatActivity {
         buildGraph();
     }
 
-    protected Flight getAddedFlight() {
-        String source = String.valueOf(detailsText_source.getText());
-        String destination = String.valueOf(detailsText_destination.getText());
-        int price = Integer.parseInt(String.valueOf(detailsText_price.getText()));
-        return new Flight(flightId, source, destination, price);
-    }
-
     protected void buildGraph() {
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[]{
-                new DataPoint(0, 2),
-                new DataPoint(1, 4),
-                new DataPoint(2, 4),
-                new DataPoint(3, 3),
-                new DataPoint(4, 1),
-                new DataPoint(5, 6),
-        });
-        graphView_graph.addSeries(series);
+        List<DataPoint> dataPointList = new ArrayList<>();
+        for (int i = 0; i < currentFlight.getAllPrices().size(); ++i) {
+            dataPointList.add(new DataPoint(2 * i + 0, currentFlight.getAllPrices().get(i)));
+            dataPointList.add(new DataPoint(2 * i + 1, currentFlight.getAllPrices().get(i)));
+        }
+        System.out.println(dataPointList);
 
-        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
-            @Override
-            public int get(DataPoint data) {
-                return Color.rgb((int) data.getX() * 255 / 4, (int) Math.abs(data.getY() * 255 / 6), 100);
-            }
-        });
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointList.toArray(new DataPoint[0]));
+        graphView_graph.addSeries(series);
     }
 }

@@ -1,6 +1,9 @@
 package com.ubb.mirko.concorde.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by mirko on 12/11/2017.
@@ -10,20 +13,34 @@ public class Flight implements Serializable {
     private int id;
     private String source;
     private String destination;
-    private int price;
+    private List<Integer> price;
 
     public Flight(int id, String source, String destination, int price) {
         this.id = id;
         this.source = source;
         this.destination = destination;
-        this.price = price;
+        this.price = new ArrayList<>();
+        this.price.add(price);
+    }
+
+    public Flight(int id, String source, String destination, List<Integer> price) {
+        this.id = id;
+        this.source = source;
+        this.destination = destination;
+        this.price = new ArrayList<>();
+        for (Integer p : price) {
+            this.price.add(p);
+        }
     }
 
     public void cloneFrom(Flight that) {
         this.id = that.id;
         this.source = that.source;
         this.destination = that.destination;
-        this.price = that.price;
+        this.price = new ArrayList<>();
+        for (Integer p : that.price) {
+            this.price.add(p);
+        }
     }
 
     public int getId() {
@@ -51,11 +68,15 @@ public class Flight implements Serializable {
     }
 
     public int getPrice() {
+        return price.get(price.size() - 1);
+    }
+
+    public List<Integer> getAllPrices() {
         return price;
     }
 
     public void setPrice(int price) {
-        this.price = price;
+        this.price.add(price);
     }
 
     @Override

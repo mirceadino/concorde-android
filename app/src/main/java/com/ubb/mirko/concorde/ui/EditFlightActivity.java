@@ -15,6 +15,8 @@ import android.widget.NumberPicker;
 import com.ubb.mirko.concorde.R;
 import com.ubb.mirko.concorde.model.Flight;
 
+import java.util.List;
+
 public class EditFlightActivity extends AppCompatActivity {
     private EditText editText_source;
     private EditText editText_destination;
@@ -22,6 +24,7 @@ public class EditFlightActivity extends AppCompatActivity {
     private Button button_edit;
     private Button button_delete;
     private int flightId;
+    private Flight initialFlight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +43,16 @@ public class EditFlightActivity extends AppCompatActivity {
         button_delete = (Button) findViewById(R.id.editFlight_button_delete);
 
         // Get flight from intent.
-        Flight flight = (Flight) getIntent().getExtras().getSerializable("currentFlight");
-        System.out.println(flight.toString());
+        initialFlight = (Flight) getIntent().getExtras().getSerializable("currentFlight");
+        System.out.println(initialFlight.toString());
 
         // Fill the layout with the information from intent.
-        flightId = flight.getId();
-        editText_source.setText(flight.getSource());
-        editText_destination.setText(flight.getDestination());
+        flightId = initialFlight.getId();
+        editText_source.setText(initialFlight.getSource());
+        editText_destination.setText(initialFlight.getDestination());
         numberPicker_pricePicker.setMinValue(0);
         numberPicker_pricePicker.setMaxValue(300);
-        numberPicker_pricePicker.setValue(flight.getPrice());
+        numberPicker_pricePicker.setValue(initialFlight.getPrice());
         numberPicker_pricePicker.setWrapSelectorWheel(true);
         button_edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,9 +107,9 @@ public class EditFlightActivity extends AppCompatActivity {
     }
 
     protected Flight getEditedFlight() {
-        String source = String.valueOf(editText_source.getText());
-        String destination = String.valueOf(editText_destination.getText());
-        int price = numberPicker_pricePicker.getValue();
-        return new Flight(flightId, source, destination, price);
+        initialFlight.setSource(String.valueOf(editText_source.getText()));
+        initialFlight.setDestination(String.valueOf(editText_destination.getText()));
+        initialFlight.setPrice(numberPicker_pricePicker.getValue());
+        return initialFlight;
     }
 }
