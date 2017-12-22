@@ -3,6 +3,7 @@ package com.ubb.mirko.concorde.controller;
 import com.ubb.mirko.concorde.model.Flight;
 import com.ubb.mirko.concorde.repository.FlightRepository;
 import com.ubb.mirko.concorde.repository.FlightRepositoryInMemory;
+import com.ubb.mirko.concorde.repository.FlightRepositoryWithRoom;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 
 public class FlightController {
-    private static final FlightController ourInstance = new FlightController(new FlightRepositoryInMemory());
+    private static final FlightController ourInstance = new FlightController(new FlightRepositoryWithRoom());
     private FlightRepository repository_;
 
     public static FlightController getInstance() {

@@ -48,7 +48,7 @@ class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHolder> {
         public void setFlight(final Flight f) {
             textView_source.setText(f.getSource());
             textView_destination.setText("to " + f.getDestination());
-            textView_price.setText("$" + Double.toString(f.getPrice()));
+            textView_price.setText("$" + Double.toString(f.getLastPrice()));
             button_details.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

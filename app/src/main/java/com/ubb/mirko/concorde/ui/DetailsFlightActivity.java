@@ -54,7 +54,7 @@ public class DetailsFlightActivity extends AppCompatActivity {
         flightId = currentFlight.getId();
         detailsText_source.setText(currentFlight.getSource());
         detailsText_destination.setText(currentFlight.getDestination());
-        detailsText_price.setText("" + currentFlight.getPrice());
+        detailsText_price.setText("" + currentFlight.getLastPrice());
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,9 +68,9 @@ public class DetailsFlightActivity extends AppCompatActivity {
 
     protected void buildGraph() {
         List<DataPoint> dataPointList = new ArrayList<>();
-        for (int i = 0; i < currentFlight.getAllPrices().size(); ++i) {
-            dataPointList.add(new DataPoint(2 * i + 0, currentFlight.getAllPrices().get(i)));
-            dataPointList.add(new DataPoint(2 * i + 1, currentFlight.getAllPrices().get(i)));
+        for (int i = 0; i < currentFlight.getPrice().size(); ++i) {
+            dataPointList.add(new DataPoint(2 * i + 0, currentFlight.getPrice().get(i)));
+            dataPointList.add(new DataPoint(2 * i + 1, currentFlight.getPrice().get(i)));
         }
         System.out.println(dataPointList);
 

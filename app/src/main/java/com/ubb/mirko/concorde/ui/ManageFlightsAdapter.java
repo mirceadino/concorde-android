@@ -48,7 +48,7 @@ class ManageFlightsAdapter extends RecyclerView.Adapter<ManageFlightsAdapter.Vie
         public void setFlight(final Flight f) {
             textView_source.setText(f.getSource());
             textView_destination.setText("to " + f.getDestination());
-            textView_price.setText("$" + Double.toString(f.getPrice()));
+            textView_price.setText("$" + Double.toString(f.getLastPrice()));
             button_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

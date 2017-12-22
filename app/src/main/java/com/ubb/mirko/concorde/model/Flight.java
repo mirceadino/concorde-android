@@ -1,21 +1,35 @@
 package com.ubb.mirko.concorde.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
+import com.ubb.mirko.concorde.dao.PriceConverter;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by mirko on 12/11/2017.
+ * Created by mirko on 22/12/2017.
  */
 
+@Entity
 public class Flight implements Serializable {
+    @PrimaryKey(autoGenerate = true)
     private int id;
+
+    @ColumnInfo(name = "source")
     private String source;
+
+    @ColumnInfo(name = "destination")
     private String destination;
+
+    @TypeConverters(PriceConverter.class)
     private List<Integer> price;
 
-    public Flight(int id, String source, String destination, int price) {
+    public Flight(String source, String destination, int price) {
         this.id = id;
         this.source = source;
         this.destination = destination;
@@ -23,8 +37,7 @@ public class Flight implements Serializable {
         this.price.add(price);
     }
 
-    public Flight(int id, String source, String destination, List<Integer> price) {
-        this.id = id;
+    public Flight(String source, String destination, List<Integer> price) {
         this.source = source;
         this.destination = destination;
         this.price = new ArrayList<>();
@@ -38,9 +51,7 @@ public class Flight implements Serializable {
         this.source = that.source;
         this.destination = that.destination;
         this.price = new ArrayList<>();
-        for (Integer p : that.price) {
-            this.price.add(p);
-        }
+        this.price.addAll(that.price);
     }
 
     public int getId() {
@@ -67,11 +78,11 @@ public class Flight implements Serializable {
         this.destination = destination;
     }
 
-    public int getPrice() {
+    public int getLastPrice() {
         return price.get(price.size() - 1);
     }
 
-    public List<Integer> getAllPrices() {
+    public List<Integer> getPrice() {
         return price;
     }
 

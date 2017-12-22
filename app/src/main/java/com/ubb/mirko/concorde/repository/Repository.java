@@ -7,11 +7,11 @@ import java.util.List;
  */
 
 public interface Repository<T> {
-    T add(T item);
+    void add(T item);
 
-    T remove(T item);
+    void remove(T item);
 
-    T remove(int id);
+    void remove(int id);
 
     List<T> get();
 

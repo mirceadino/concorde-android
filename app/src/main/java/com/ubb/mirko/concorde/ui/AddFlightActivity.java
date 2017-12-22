@@ -1,7 +1,6 @@
 package com.ubb.mirko.concorde.ui;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -62,6 +61,6 @@ public class AddFlightActivity extends AppCompatActivity {
         String source = String.valueOf(addText_source.getText());
         String destination = String.valueOf(addText_destination.getText());
         int price = Integer.parseInt(String.valueOf(addText_price.getText()));
-        return new Flight(-1, source, destination, price);
+        return new Flight(source, destination, price);
     }
 }

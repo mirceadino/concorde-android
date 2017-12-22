@@ -52,7 +52,7 @@ public class EditFlightActivity extends AppCompatActivity {
         editText_destination.setText(initialFlight.getDestination());
         numberPicker_pricePicker.setMinValue(0);
         numberPicker_pricePicker.setMaxValue(300);
-        numberPicker_pricePicker.setValue(initialFlight.getPrice());
+        numberPicker_pricePicker.setValue(initialFlight.getLastPrice());
         numberPicker_pricePicker.setWrapSelectorWheel(true);
         button_edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +70,7 @@ public class EditFlightActivity extends AppCompatActivity {
                 String subject = "Flight was modified";
                 String body = "Flight #" + flight.getId() + " is now from " +
                         flight.getSource() + " to " + flight.getDestination() + " for $" +
-                        flight.getPrice() + ".";
+                        flight.getLastPrice() + ".";
                 Intent sendMailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + Uri.encode(address)));
                 sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
                 sendMailIntent.putExtra(Intent.EXTRA_TEXT, body);
