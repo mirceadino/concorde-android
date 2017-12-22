@@ -2,7 +2,6 @@ package com.ubb.mirko.concorde.controller;
 
 import com.ubb.mirko.concorde.model.Flight;
 import com.ubb.mirko.concorde.repository.FlightRepository;
-import com.ubb.mirko.concorde.repository.FlightRepositoryInMemory;
 import com.ubb.mirko.concorde.repository.FlightRepositoryWithRoom;
 
 import java.util.List;
