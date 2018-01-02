@@ -5,6 +5,7 @@ import com.ubb.mirko.concorde.repository.FlightRepository;
 import com.ubb.mirko.concorde.repository.FlightRepositoryWithRoom;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by mirko on 16/12/2017.
