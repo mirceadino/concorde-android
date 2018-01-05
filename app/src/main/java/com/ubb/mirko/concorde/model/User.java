@@ -62,11 +62,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public boolean is_ibis() {
+    public boolean isIbis() {
         return is_ibis;
     }
 
-    public void set_ibis(boolean is_ibis) {
+    public void setIbis(boolean is_ibis) {
         this.is_ibis = is_ibis;
     }
 

@@ -41,9 +41,7 @@ public class Flight implements Serializable {
         this.source = source;
         this.destination = destination;
         this.price = new ArrayList<>();
-        for (Integer p : price) {
-            this.price.add(p);
-        }
+        this.price.addAll(price);
     }
 
     public void cloneFrom(Flight that) {

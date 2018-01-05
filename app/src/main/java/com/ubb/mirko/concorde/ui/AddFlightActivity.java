@@ -23,48 +23,29 @@ public class AddFlightActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_flight);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Get add texts and buttons from layout.
-        addText_source = (EditText) findViewById(R.id.addFlight_source);
-        addText_destination = (EditText) findViewById(R.id.addFlight_destination);
-        addText_price = (EditText) findViewById(R.id.addFlight_price);
-        button_add = (Button) findViewById(R.id.addFlight_button_add);
-        button_cancel = (Button) findViewById(R.id.addFlight_button_cancel);
+        addText_source = findViewById(R.id.addFlight_source);
+        addText_destination = findViewById(R.id.addFlight_destination);
+        addText_price = findViewById(R.id.addFlight_price);
+        button_add = findViewById(R.id.addFlight_button_add);
+        button_cancel = findViewById(R.id.addFlight_button_cancel);
 
-        // Fill the layout with the information from intent.
         button_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get the modified flight.
                 Flight flight = getAddedFlight();
-
-                // Intent to modify the flight.
-                Intent modifyIntent = new Intent(AddFlightActivity.this, ManageFlightsActivity.class);
-                modifyIntent.putExtra("addedFlight", flight);
-                startActivity(modifyIntent);
-
-                // Intent to send an email.
-                String address = "mirceadino97@gmail.com";
-                String subject = "New flight on Concorde";
-                String body = "You can now fly from" +
-                        flight.getSource() + " to " + flight.getDestination() + " for $" +
-                        flight.getLastPrice() + ".";
-                Intent sendMailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + Uri.encode(address)));
-                sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-                sendMailIntent.putExtra(Intent.EXTRA_TEXT, body);
-                startActivity(sendMailIntent);
+                addNewFlight(flight);
+                sendNewFlightEmail(flight);
             }
         });
 
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent cancelIntent = new Intent(AddFlightActivity.this, ManageFlightsActivity.class);
-                startActivity(cancelIntent);
+                finish();
             }
         });
     }
@@ -74,5 +55,23 @@ public class AddFlightActivity extends AppCompatActivity {
         String destination = String.valueOf(addText_destination.getText());
         int price = Integer.parseInt(String.valueOf(addText_price.getText()));
         return new Flight(source, destination, price);
+    }
+
+    protected void addNewFlight(Flight flight) {
+        Intent addNewIntent = new Intent(this, ManageFlightsActivity.class);
+        addNewIntent.putExtra("addedFlight", flight);
+        startActivity(addNewIntent);
+    }
+
+    protected void sendNewFlightEmail(Flight flight) {
+        String address = "mirceadino97@gmail.com";
+        String subject = "New flight on Concorde";
+        String body = "You can now fly from" +
+                flight.getSource() + " to " + flight.getDestination() + " for $" +
+                flight.getLastPrice() + ".";
+        Intent sendMailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + Uri.encode(address)));
+        sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        sendMailIntent.putExtra(Intent.EXTRA_TEXT, body);
+        startActivity(sendMailIntent);
     }
 }

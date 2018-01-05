@@ -10,31 +10,31 @@ import java.util.List;
  */
 
 public class FlightRepositoryInMemory implements FlightRepository {
-    private List<Flight> items_;
-    private int nextId_;
+    private List<Flight> items;
+    private int nextId;
 
     public FlightRepositoryInMemory() {
-        items_ = new ArrayList<>();
-        items_.add(new Flight("Cluj-Napoca", "Budapest", 30));
-        items_.add(new Flight("Cluj-Napoca", "Bucharest", 15));
-        items_.add(new Flight("Budapest", "Cluj-Napoca", 35));
-        items_.add(new Flight("Budapest", "Bucharest", 33));
-        items_.add(new Flight("Bucharest", "Cluj-Napoca", 18));
-        nextId_ = 6;
+        items = new ArrayList<>();
+        items.add(new Flight("Cluj-Napoca", "Budapest", 30));
+        items.add(new Flight("Cluj-Napoca", "Bucharest", 15));
+        items.add(new Flight("Budapest", "Cluj-Napoca", 35));
+        items.add(new Flight("Budapest", "Bucharest", 33));
+        items.add(new Flight("Bucharest", "Cluj-Napoca", 18));
+        nextId = 6;
     }
 
     @Override
     public void add(Flight newItem) {
         if (newItem.getId() == -1) {
-            newItem.setId(nextId_);
-            nextId_ += 1;
+            newItem.setId(nextId);
+            nextId += 1;
         }
-        for (Flight item : items_) {
+        for (Flight item : items) {
             if (item.getId() == newItem.getId()) {
                 item.cloneFrom(newItem);
             }
         }
-        items_.add(newItem);
+        items.add(newItem);
     }
 
     @Override
@@ -44,9 +44,9 @@ public class FlightRepositoryInMemory implements FlightRepository {
 
     @Override
     public void remove(int id) {
-        for (Flight item : items_) {
+        for (Flight item : items) {
             if (item.getId() == id) {
-                items_.remove(item);
+                items.remove(item);
                 return;
             }
         }
@@ -54,12 +54,12 @@ public class FlightRepositoryInMemory implements FlightRepository {
 
     @Override
     public List<Flight> get() {
-        return items_;
+        return items;
     }
 
     @Override
     public Flight get(int id) {
-        for (Flight item : items_) {
+        for (Flight item : items) {
             if (item.getId() == id) {
                 return item;
             }

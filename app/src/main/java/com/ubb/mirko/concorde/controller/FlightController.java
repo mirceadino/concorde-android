@@ -13,25 +13,25 @@ import java.util.Random;
 
 public class FlightController {
     private static final FlightController ourInstance = new FlightController(new FlightRepositoryWithRoom());
-    private FlightRepository repository_;
+    private FlightRepository repository;
 
     public static FlightController getInstance() {
         return ourInstance;
     }
 
     public FlightController(FlightRepository repository) {
-        repository_ = repository;
+        this.repository = repository;
     }
 
     public List<Flight> getAllFlights() {
-        return repository_.get();
+        return repository.get();
     }
 
     public void addFlight(Flight flight) {
-        repository_.add(flight);
+        repository.add(flight);
     }
 
     public void removeFlight(Flight deletedFlight) {
-        repository_.remove(deletedFlight);
+        repository.remove(deletedFlight);
     }
 }

@@ -10,7 +10,7 @@ import com.ubb.mirko.concorde.repository.UserRepositoryWithRoom;
 
 public class UserController {
     private static final UserController ourInstance = new UserController(new UserRepositoryWithRoom());
-    private UserRepository repository_;
+    private UserRepository repository;
     private User currentUser = null;
 
     public static UserController getInstance() {
@@ -18,13 +18,11 @@ public class UserController {
     }
 
     public UserController(UserRepository repository) {
-        repository_ = repository;
-        // repository_.add(new User("ibis", "ibis", true));
-        // repository_.add(new User("sparrow", "sparrow", false));
+        this.repository = repository;
     }
 
     public User authenticate(String username, String password) {
-        User user = repository_.get(username);
+        User user = repository.get(username);
         if (user != null && user.getPassword().equals(password)) {
             currentUser = user;
             return user;
