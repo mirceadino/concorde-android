@@ -120,7 +120,13 @@ public class MainActivity extends AppCompatActivity
         GSIClient = GoogleSignIn.getClient(this, gso);
 
         userController.subscribe(this);
-        update(ObserverStatus.OK, "");
+        User user = userController.getCurrentUser();
+        if (user != null) {
+            showLoggedInUser(user);
+
+        } else {
+            showLoggedOutUser();
+        }
     }
 
     @Override
