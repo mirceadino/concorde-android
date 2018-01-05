@@ -8,13 +8,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +25,10 @@ import com.google.android.gms.tasks.Task;
 import com.ubb.mirko.concorde.R;
 import com.ubb.mirko.concorde.controller.UserController;
 import com.ubb.mirko.concorde.model.User;
+import com.ubb.mirko.concorde.observer.Observer;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Observer {
 
     private EditText editText_username;
     private EditText editText_password;
@@ -94,15 +93,7 @@ public class MainActivity extends AppCompatActivity
                 String username = String.valueOf(editText_username.getText());
                 String password = String.valueOf(editText_password.getText());
 
-                UserController userController = UserController.getInstance();
-                User user = userController.authenticate(username, password);
-
-                if (user == null) {
-                    showToast("Username doesn't exist or password doesn't match.");
-
-                } else {
-                    showLoggedInUser(user);
-                }
+                userController.authenticate(username, password);
             }
         });
 
@@ -128,13 +119,8 @@ public class MainActivity extends AppCompatActivity
                         .build();
         GSIClient = GoogleSignIn.getClient(this, gso);
 
-        User user = userController.getCurrentUser();
-        if (user != null) {
-            showLoggedInUser(user);
-
-        } else {
-            showLoggedOutUser();
-        }
+        userController.subscribe(this);
+        update(ObserverStatus.OK, "");
     }
 
     @Override
@@ -146,19 +132,13 @@ public class MainActivity extends AppCompatActivity
             try {
                 System.out.println(data);
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                User user = userController.authenticateWithGoogle(account);
-
-                if (user == null) {
-                    showToast("Username doesn't exist or password doesn't match.");
-
-                } else {
-                    showLoggedInUser(user);
-                }
+                userController.authenticateWithGoogle(account);
 
             } catch (ApiException e) {
                 // The ApiException status code indicates the detailed failure reason.
                 // Please refer to the GoogleSignInStatusCodes class reference for more information.
                 System.out.println("Sign in failed: " + e.getStatusCode() + " - " + e.getMessage());
+                showToast("Sign in with Google failed.");
             }
         }
     }
@@ -235,5 +215,19 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void update(ObserverStatus status, Object object) {
+        String message = (String) object;
+        showToast(message);
+
+        User user = userController.getCurrentUser();
+        if (user != null) {
+            showLoggedInUser(user);
+
+        } else {
+            showLoggedOutUser();
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.ubb.mirko.concorde.service;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.ubb.mirko.concorde.model.Flight;
 import com.ubb.mirko.concorde.observer.Observable;

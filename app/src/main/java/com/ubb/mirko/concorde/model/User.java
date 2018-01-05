@@ -4,6 +4,9 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -29,6 +32,10 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
         this.isIbis = isIbis;
+    }
+
+    public User(JSONObject object) throws JSONException {
+        fromJSON(object);
     }
 
     public void cloneFrom(User that) {
@@ -68,6 +75,22 @@ public class User implements Serializable {
 
     public void setIbis(boolean isIbis) {
         this.isIbis = isIbis;
+    }
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put("id", getId());
+        object.put("username", getUsername());
+        object.put("password", getPassword());
+        object.put("isIbis", isIbis());
+        return object;
+    }
+
+    public void fromJSON(JSONObject object) throws JSONException {
+        id = (Integer) object.get("id");
+        username = (String) object.get("username");
+        password = (String) object.get("password");
+        isIbis = (Boolean) object.get("isIbis");
     }
 
     @Override

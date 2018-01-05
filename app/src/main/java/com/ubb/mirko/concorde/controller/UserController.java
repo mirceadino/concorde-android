@@ -1,12 +1,8 @@
 package com.ubb.mirko.concorde.controller;
 
-import android.content.Context;
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.ubb.mirko.concorde.model.User;
+import com.ubb.mirko.concorde.observer.Observer;
 import com.ubb.mirko.concorde.repository.UserRepository;
 import com.ubb.mirko.concorde.repository.UserRepositoryWithRoom;
 import com.ubb.mirko.concorde.service.UserService;
@@ -18,7 +14,6 @@ import com.ubb.mirko.concorde.service.UserService;
 public class UserController {
     private static final UserController ourInstance = newInstance();
     private UserService service;
-    private User currentUser = null;
 
     public static UserController getInstance() {
         return ourInstance;
@@ -34,21 +29,23 @@ public class UserController {
         this.service = service;
     }
 
-    public User authenticate(String username, String password) {
-        currentUser = service.authenticate(username, password);
-        return currentUser;
+    public void authenticate(String username, String password) {
+        service.authenticate(username, password);
     }
 
     public void logout() {
-        currentUser = null;
+        service.logout();
     }
 
     public User getCurrentUser() {
-        return currentUser;
+        return service.getCurrentUser();
     }
 
-    public User authenticateWithGoogle(GoogleSignInAccount account) {
-        currentUser = service.authenticateWithGoogle(account);
-        return currentUser;
+    public void authenticateWithGoogle(GoogleSignInAccount account) {
+        service.authenticateWithGoogle(account);
+    }
+
+    public void subscribe(Observer observer){
+        service.attach(observer);
     }
 }
