@@ -1,5 +1,6 @@
 package com.ubb.mirko.concorde.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
@@ -14,6 +15,8 @@ import com.ubb.mirko.concorde.R;
 import com.ubb.mirko.concorde.model.Flight;
 
 import java.util.List;
+
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 /**
  * Created by mirko on 12/11/2017.
@@ -53,8 +56,7 @@ class ManageFlightsAdapter extends RecyclerView.Adapter<ManageFlightsAdapter.Vie
                 public void onClick(View view) {
                     Intent myIntent = new Intent(context, EditFlightActivity.class);
                     myIntent.putExtra("flight", f);
-                    // TODO: startActivityWithResult
-                    context.startActivity(myIntent);
+                    ((Activity)context).startActivityForResult(myIntent, 0);
                 }
             });
         }

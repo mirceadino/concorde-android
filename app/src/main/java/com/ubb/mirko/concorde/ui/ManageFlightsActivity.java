@@ -44,26 +44,33 @@ public class ManageFlightsActivity extends AppCompatActivity implements Observer
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(ManageFlightsActivity.this, AddFlightActivity.class);
-                startActivity(myIntent);
+                startActivityForResult(myIntent, 0);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         flightController.subscribe(this);
-
-        // Get modified/added/removed flight if that's the case and modify/add/remove the flight.
-        if (getIntent().hasExtra("addedFlight")) {
-            Flight addedFlight = (Flight) getIntent().getExtras().getSerializable("addedFlight");
-            System.out.println("Added flight: " + addedFlight);
-            flightController.addFlight(addedFlight);
-
-        } else if (getIntent().hasExtra("deletedFlight")) {
-            Flight deletedFlight = (Flight) getIntent().getExtras().getSerializable("deletedFlight");
-            System.out.println("Deleted flight: " + deletedFlight);
-            flightController.removeFlight(deletedFlight);
-        }
-
         update(ObserverStatus.OK, flightController.getAllFlights());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 0 && resultCode == 123) {
+            // Get modified/added/removed flight if that's the case and modify/add/remove the flight.
+            if (data.hasExtra("addedFlight")) {
+                Flight addedFlight = (Flight) data.getExtras().getSerializable("addedFlight");
+                System.out.println("Added flight: " + addedFlight);
+                flightController.addFlight(addedFlight);
+
+            } else if (data.hasExtra("deletedFlight")) {
+                Flight deletedFlight = (Flight) data.getExtras().getSerializable("deletedFlight");
+                System.out.println("Deleted flight: " + deletedFlight);
+                flightController.removeFlight(deletedFlight);
+            }
+
+        }
     }
 
     @Override

@@ -60,7 +60,8 @@ public class AddFlightActivity extends AppCompatActivity {
     protected void addNewFlight(Flight flight) {
         Intent addNewIntent = new Intent(this, ManageFlightsActivity.class);
         addNewIntent.putExtra("addedFlight", flight);
-        startActivity(addNewIntent);
+        setResult(123, addNewIntent);
+        finish();
     }
 
     protected void sendNewFlightEmail(Flight flight) {

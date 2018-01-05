@@ -90,12 +90,14 @@ public class EditFlightActivity extends AppCompatActivity {
     protected void modifyFlight(Flight flight) {
         Intent modifyIntent = new Intent(this, ManageFlightsActivity.class);
         modifyIntent.putExtra("addedFlight", flight);
-        startActivity(modifyIntent);
+        setResult(123, modifyIntent);
+        finish();
     }
 
     protected void deleteFlight(Flight flight) {
         Intent deleteIntent = new Intent(this, ManageFlightsActivity.class);
         deleteIntent.putExtra("deletedFlight", flight);
-        startActivity(deleteIntent);
+        setResult(123, deleteIntent);
+        finish();
     }
 }
