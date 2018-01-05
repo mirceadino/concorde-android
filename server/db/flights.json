@@ -1,0 +1,8 @@
+[
+  {
+    "id": 1,
+    "source": "Cluj-Napoca",
+    "destination": "Berlin",
+    "price": [3,4,5,1,3]
+  }
+]
