@@ -5,4 +5,9 @@ package com.ubb.mirko.concorde.observer;
  */
 
 public interface Observable {
+    void attach(Observer observer);
+
+    void detach(Observer observer);
+
+    void notifyObservers(Observer.ObserverStatus status, Object object);
 }

@@ -14,8 +14,12 @@ import com.ubb.mirko.concorde.R;
 import com.ubb.mirko.concorde.controller.FlightController;
 import com.ubb.mirko.concorde.controller.UserController;
 import com.ubb.mirko.concorde.model.Flight;
+import com.ubb.mirko.concorde.observer.Observer;
 
-public class ManageFlightsActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ManageFlightsActivity extends AppCompatActivity implements Observer {
 
     private RecyclerView recyclerView_flights;
     private RecyclerView.Adapter recyclerView_flights_adapter;
@@ -45,12 +49,7 @@ public class ManageFlightsActivity extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Setup displaying flights.
-        recyclerView_flights = findViewById(R.id.recyclerView_manage_flights);
-        // recyclerView_flights.setHasFixedSize(true);
-        // use a linear layout manager
-        recyclerView_flights_layoutManager = new LinearLayoutManager(this);
-        recyclerView_flights.setLayoutManager(recyclerView_flights_layoutManager);
+        flightController.subscribe(this);
 
         // Get modified/added/removed flight if that's the case and modify/add/remove the flight.
         if (getIntent().hasExtra("addedFlight")) {
@@ -64,8 +63,28 @@ public class ManageFlightsActivity extends AppCompatActivity {
             flightController.removeFlight(deletedFlight);
         }
 
-        // specify an adapter
-        recyclerView_flights_adapter = new ManageFlightsAdapter(flightController.getAllFlights(), this);
-        recyclerView_flights.setAdapter(recyclerView_flights_adapter);
+        update(ObserverStatus.OK, flightController.getAllFlights());
+    }
+
+    @Override
+    public void update(ObserverStatus status, Object object) {
+        if (status == ObserverStatus.OK) {
+            List<Flight> flights = (ArrayList<Flight>) object;
+            // Setup displaying flights.
+            recyclerView_flights = findViewById(R.id.recyclerView_manage_flights);
+            // recyclerView_flights.setHasFixedSize(true);
+            // use a linear layout manager
+            recyclerView_flights_layoutManager = new LinearLayoutManager(this);
+            recyclerView_flights.setLayoutManager(recyclerView_flights_layoutManager);
+
+            // specify an adapter
+            recyclerView_flights_adapter = new ManageFlightsAdapter(flights, this);
+            recyclerView_flights.setAdapter(recyclerView_flights_adapter);
+
+        } else if (status == ObserverStatus.FAIL) {
+            String message = (String) object;
+            showToast(message);
+        }
+
     }
 }

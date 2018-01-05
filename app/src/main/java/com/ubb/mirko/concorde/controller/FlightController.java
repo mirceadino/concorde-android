@@ -1,6 +1,7 @@
 package com.ubb.mirko.concorde.controller;
 
 import com.ubb.mirko.concorde.model.Flight;
+import com.ubb.mirko.concorde.observer.Observer;
 import com.ubb.mirko.concorde.repository.FlightRepository;
 import com.ubb.mirko.concorde.repository.FlightRepositoryWithRoom;
 import com.ubb.mirko.concorde.service.FlightService;
@@ -39,5 +40,9 @@ public class FlightController {
 
     public void removeFlight(Flight deletedFlight) {
         service.removeFlight(deletedFlight);
+    }
+
+    public void subscribe(Observer observer){
+        service.attach(observer);
     }
 }

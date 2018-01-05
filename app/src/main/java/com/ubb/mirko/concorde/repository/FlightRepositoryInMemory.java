@@ -66,4 +66,9 @@ public class FlightRepositoryInMemory implements FlightRepository {
         }
         return null;
     }
+
+    @Override
+    public void set(List<Flight> list) {
+        items = list;
+    }
 }

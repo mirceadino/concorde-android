@@ -42,6 +42,17 @@ public class UserRepositoryWithRoom implements UserRepository {
     }
 
     @Override
+    public void set(List<User> list) {
+        for (User user : get()) {
+            remove(user);
+        }
+
+        for (User user : list) {
+            add(user);
+        }
+    }
+
+    @Override
     public User get(String username) {
         return db.userDao().getUserWithUsername(username);
     }

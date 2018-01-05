@@ -5,4 +5,9 @@ package com.ubb.mirko.concorde.observer;
  */
 
 public interface Observer {
+    enum ObserverStatus {
+        OK, FAIL
+    }
+
+    void update(ObserverStatus status, Object object);
 }

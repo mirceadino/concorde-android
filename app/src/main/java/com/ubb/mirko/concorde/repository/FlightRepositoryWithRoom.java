@@ -43,15 +43,22 @@ public class FlightRepositoryWithRoom implements FlightRepository {
         return db.flightDao().getFlightWithId(id);
     }
 
+    @Override
+    public void set(List<Flight> list) {
+        for (Flight flight : get()) {
+            remove(flight);
+        }
+
+        for(Flight flight: list){
+            add(flight);
+        }
+    }
+
     private int getRandom(Random random, int min, int max) {
         return random.nextInt(max - min + 1) + min;
     }
 
     private void cleanAndPopulate() {
-        for (Flight flight : get()) {
-            remove(flight);
-        }
-
         Random random = new Random();
         List<Flight> flights = new ArrayList<>();
         flights.add(new Flight("Bucharest", "Budapest", getRandom(random, 10, 50)));
@@ -65,8 +72,6 @@ public class FlightRepositoryWithRoom implements FlightRepository {
             }
         }
 
-        for (Flight flight : flights) {
-            add(flight);
-        }
+        set(flights);
     }
 }

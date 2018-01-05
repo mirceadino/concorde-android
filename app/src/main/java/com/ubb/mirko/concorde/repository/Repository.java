@@ -16,4 +16,6 @@ public interface Repository<T> {
     List<T> get();
 
     T get(int id);
+
+    void set(List<T> list);
 }

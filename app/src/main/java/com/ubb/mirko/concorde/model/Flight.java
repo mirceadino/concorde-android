@@ -7,6 +7,10 @@ import android.arch.persistence.room.TypeConverters;
 
 import com.ubb.mirko.concorde.dao.PriceConverter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +46,10 @@ public class Flight implements Serializable {
         this.destination = destination;
         this.price = new ArrayList<>();
         this.price.addAll(price);
+    }
+
+    public Flight(JSONObject object) throws JSONException {
+        fromJSON(object);
     }
 
     public void cloneFrom(Flight that) {
@@ -86,6 +94,26 @@ public class Flight implements Serializable {
 
     public void setPrice(int price) {
         this.price.add(price);
+    }
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put("id", getId());
+        object.put("source", getSource());
+        object.put("destination", getDestination());
+        object.put("price", new JSONArray(getPrice()));
+        return object;
+    }
+
+    public void fromJSON(JSONObject object) throws JSONException {
+        id = (Integer) object.get("id");
+        source = (String) object.get("source");
+        destination = (String) object.get("destination");
+        price = new ArrayList<>();
+        JSONArray array = (JSONArray) object.get("price");
+        for (int i = 0; i < array.length(); ++i) {
+            price.add(array.getInt(i));
+        }
     }
 
     @Override
