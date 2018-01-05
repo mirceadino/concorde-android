@@ -3,7 +3,9 @@ package com.ubb.mirko.concorde.repository;
 import com.ubb.mirko.concorde.db.AppDatabase;
 import com.ubb.mirko.concorde.model.Flight;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by mirko on 22/12/2017.
@@ -11,6 +13,10 @@ import java.util.List;
 
 public class FlightRepositoryWithRoom implements FlightRepository {
     private AppDatabase db = AppDatabase.getInstance();
+
+    public FlightRepositoryWithRoom() {
+        // cleanAndPopulate();
+    }
 
     @Override
     public void add(Flight item) {
@@ -35,5 +41,32 @@ public class FlightRepositoryWithRoom implements FlightRepository {
     @Override
     public Flight get(int id) {
         return db.flightDao().getFlightWithId(id);
+    }
+
+    private int getRandom(Random random, int min, int max) {
+        return random.nextInt(max - min + 1) + min;
+    }
+
+    private void cleanAndPopulate() {
+        for (Flight flight : get()) {
+            remove(flight);
+        }
+
+        Random random = new Random();
+        List<Flight> flights = new ArrayList<>();
+        flights.add(new Flight("Bucharest", "Budapest", getRandom(random, 10, 50)));
+        flights.add(new Flight("Paris", "Budapest", getRandom(random, 10, 50)));
+        flights.add(new Flight("Paris", "London", getRandom(random, 10, 50)));
+        flights.add(new Flight("London", "Paris", getRandom(random, 10, 50)));
+
+        for (int i = 0; i < 4; ++i) {
+            for (Flight flight : flights) {
+                flight.setPrice(getRandom(random, 10, 50));
+            }
+        }
+
+        for (Flight flight : flights) {
+            add(flight);
+        }
     }
 }

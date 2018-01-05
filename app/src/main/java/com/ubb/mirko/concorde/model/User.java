@@ -21,21 +21,21 @@ public class User implements Serializable {
     @ColumnInfo(name = "password")
     private String password;
 
-    @ColumnInfo(name = "is_ibis")
-    private boolean is_ibis;
+    @ColumnInfo(name = "isIbis")
+    private boolean isIbis;
 
-    public User(String username, String password, boolean is_ibis) {
+    public User(String username, String password, boolean isIbis) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.is_ibis = is_ibis;
+        this.isIbis = isIbis;
     }
 
     public void cloneFrom(User that) {
         this.id = that.id;
         this.username = that.username;
         this.password = that.password;
-        this.is_ibis = that.is_ibis;
+        this.isIbis = that.isIbis;
     }
 
     public int getId() {
@@ -63,11 +63,11 @@ public class User implements Serializable {
     }
 
     public boolean isIbis() {
-        return is_ibis;
+        return isIbis;
     }
 
-    public void setIbis(boolean is_ibis) {
-        this.is_ibis = is_ibis;
+    public void setIbis(boolean isIbis) {
+        this.isIbis = isIbis;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class User implements Serializable {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", is_ibis=" + is_ibis +
+                ", isIbis=" + isIbis +
                 '}';
     }
 }

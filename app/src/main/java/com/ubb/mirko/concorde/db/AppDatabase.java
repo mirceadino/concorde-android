@@ -14,7 +14,7 @@ import com.ubb.mirko.concorde.model.User;
  * Created by mirko on 22/12/2017.
  */
 
-@Database(entities = {Flight.class, User.class}, version = 2, exportSchema = false)
+@Database(entities = {Flight.class, User.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract FlightDao flightDao();
 

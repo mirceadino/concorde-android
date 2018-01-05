@@ -12,6 +12,10 @@ import java.util.List;
 public class UserRepositoryWithRoom implements UserRepository {
     private AppDatabase db = AppDatabase.getInstance();
 
+    public UserRepositoryWithRoom() {
+        // cleanAndPopulate();
+    }
+
     @Override
     public void add(User item) {
         db.userDao().insert(item);
@@ -38,5 +42,16 @@ public class UserRepositoryWithRoom implements UserRepository {
     }
 
     @Override
-    public User get(String username) {return db.userDao().getUserWithUsername(username);}
+    public User get(String username) {
+        return db.userDao().getUserWithUsername(username);
+    }
+
+    private void cleanAndPopulate() {
+        for (User user : get()) {
+            remove(user);
+        }
+
+        add(new User("ibis", "ibis", true));
+        add(new User("sparrow", "sparrow", false));
+    }
 }

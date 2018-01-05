@@ -12,7 +12,7 @@ import java.util.List;
 
 public class PriceConverter {
     @TypeConverter
-    static List<Integer> toList(String str) {
+    public static List<Integer> toList(String str) {
         if (str == null) {
             return new ArrayList<>();
         }
@@ -28,7 +28,7 @@ public class PriceConverter {
     }
 
     @TypeConverter
-    static String toString(List<Integer> list) {
+    public static String toString(List<Integer> list) {
         if (list == null || list.size() == 0) return "";
 
         StringBuilder sb = new StringBuilder();
