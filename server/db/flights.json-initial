@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "source": "Cluj-Napoca",
+    "destination": "Paris",
+    "price": [10, 15, 20, 15]
+  },
+  {
+    "id": 2,
+    "source": "Budapest",
+    "destination": "Paris",
+    "price": [10, 15, 20, 15]
+  },
+  {
+    "id": 3,
+    "source": "Cluj-Napoca",
+    "destination": "Budapest",
+    "price": [10, 15, 20, 15]
+  },
+  {
+    "id": 4,
+    "source": "Paris",
+    "destination": "Budapest",
+    "price": [10, 15, 20, 15]
+  }
+]

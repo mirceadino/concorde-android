@@ -8,50 +8,79 @@ DB_USERS_FILENAME="db/users.json"
 app = Flask(__name__)
 api = Api(app)
 flights = {}
+users = {}
 parser = reqparse.RequestParser()
 parser.add_argument("flight")
+parser.add_argument("user")
 
 
-class FlightList(Resource):
+class Flights(Resource):
+    def save(self):
+        save_db(flights, DB_FLIGHTS_FILENAME)
+
     def get(self):
-        result = to_json(flights.values())
-        return result
+        return list(flights.values())
 
     def post(self):
         args = parser.parse_args()
-        id = int(max(flights.keys())) + 1
+        id = 1 if len(flights) is 0 else int(max(flights.keys())) + 1
         flight = from_json(args["flight"])
-        flight["id"] = id
-        flights[id] = flight
-        return to_json(flight)
-
-
-class Flight(Resource):
-    def get(self, id):
-        result = None
-        if id in flights.keys():
-            result = flights[id]
-        result = to_json(result)
-        return result
-
-    def put(self, data):
-        flight = from_json(data)
+        print(flight)
+        print(id)
+        if (not "id" in flight.keys()) or (flight["id"] <= 0):
+            flight["id"] = id
         flights[flight["id"]] = flight
-        print(flights)
-        return data 
+        self.save()
+        return flight #to_json(flight)
+
+    def delete(self):
+        args = parser.parse_args()
+        flight = from_json(args["flight"])
+        if flight["id"] in flights.keys():
+            flights.pop(flight["id"])
+        self.save()
+        return flight #to_json(flight)
+
+
+class Users(Resource):
+    def save(self):
+        save_db(users, DB_USERS_FILENAME)
+
+    def get(self):
+        return list(users.values())
+
+    def post(self):
+        args = parser.parse_args()
+        id = 1 if len(users) is 0 else int(max(users.keys())) + 1
+        user = from_json(args["user"])
+        if (not "id" in user.keys()) or (user["id"] <= 0):
+            user["id"] = id
+        users[user["id"]] = user
+        self.save()
+        return user
+
+    def delete(self):
+        args = parser.parse_args()
+        user = from_json(args["user"])
+        if user["id"] in users.keys():
+            users.pop(user["id"])
+        self.save()
+        return user
 
 
 def on_start():
     global flights
+    global users
     flights = load_db(DB_FLIGHTS_FILENAME)
+    users = load_db(DB_USERS_FILENAME)
 
     global api
-    api.add_resource(FlightList, '/flights')
-    api.add_resource(Flight, '/flights/<int:id>')
+    api.add_resource(Flights, '/flights')
+    api.add_resource(Users, '/users')
 
 
 def load_db(filename):
-    db_file = open(filename)
+    db_file = open(filename, "r")
     content = db_file.read()
     item_array = from_json(content)
     item_dict = {}
@@ -64,11 +93,11 @@ def load_db(filename):
 
 
 def save_db(db, filename):
-    db_file = open(filename)
-    db_file.write(to_json(db))
+    db_file = open(filename, "w")
+    db_file.write(to_json(list(db.values())))
     db_file.close()
 
 
 if __name__ == '__main__':
     on_start()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

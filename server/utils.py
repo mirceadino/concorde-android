@@ -2,10 +2,12 @@ import json
 
 
 def log(message):
-    print("### " + str(message))
+    #print("### " + str(message))
+    pass
 
 
 def from_json(item):
+    item = item.replace("'", '"')
     return json.loads(item)
 
 

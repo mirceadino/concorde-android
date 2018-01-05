@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "username": "ibis",
+    "password": "ibis",
+    "isIbis": true
+  },
+  {
+    "id": 2,
+    "username": "sparrow",
+    "password": "sparrow",
+    "isIbis": false 
+  }
+]
