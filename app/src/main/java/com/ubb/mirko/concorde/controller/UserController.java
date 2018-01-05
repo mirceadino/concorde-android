@@ -9,31 +9,33 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.ubb.mirko.concorde.model.User;
 import com.ubb.mirko.concorde.repository.UserRepository;
 import com.ubb.mirko.concorde.repository.UserRepositoryWithRoom;
+import com.ubb.mirko.concorde.service.UserService;
 
 /**
  * Created by mirko on 02/01/2018.
  */
 
 public class UserController {
-    private static final UserController ourInstance = new UserController(new UserRepositoryWithRoom());
-    private UserRepository repository;
+    private static final UserController ourInstance = newInstance();
+    private UserService service;
     private User currentUser = null;
 
     public static UserController getInstance() {
         return ourInstance;
     }
 
-    public UserController(UserRepository repository) {
-        this.repository = repository;
-        System.out.println(repository.get());
+    private static final UserController newInstance() {
+        UserRepository repository = new UserRepositoryWithRoom();
+        UserService service = new UserService(repository);
+        return new UserController(service);
+    }
+
+    public UserController(UserService service) {
+        this.service = service;
     }
 
     public User authenticate(String username, String password) {
-        User user = repository.get(username);
-        if (user != null && !user.getPassword().equals(password)) {
-            user = null;
-        }
-        currentUser = user;
+        currentUser = service.authenticate(username, password);
         return currentUser;
     }
 
@@ -46,14 +48,7 @@ public class UserController {
     }
 
     public User authenticateWithGoogle(GoogleSignInAccount account) {
-        User user = repository.get(account.getId());
-        if (user == null) {
-            String username = account.getId();
-            String password = account.getId();
-            user = new User(username, password, false);
-            repository.add(user);
-        }
-        currentUser = user;
+        currentUser = service.authenticateWithGoogle(account);
         return currentUser;
     }
 }
