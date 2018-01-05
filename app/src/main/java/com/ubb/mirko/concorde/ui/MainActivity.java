@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.ubb.mirko.concorde.R;
 import com.ubb.mirko.concorde.controller.UserController;
 import com.ubb.mirko.concorde.model.User;
@@ -26,17 +33,31 @@ public class MainActivity extends AppCompatActivity
 
     private EditText editText_username;
     private EditText editText_password;
+    private TextView loginForm_info;
     private Button button_login;
+    private Button button_loginWithGoogle;
+    private Button button_logout;
     private UserController userController = UserController.getInstance();
+    private GoogleSignInClient GSIClient;
 
     void showLoggedInUser(User user) {
-        ((LinearLayout) editText_username.getParent()).removeView(editText_username);
-        ((LinearLayout) editText_password.getParent()).removeView(editText_password);
-        ((LinearLayout) button_login.getParent()).removeView(button_login);
-        TextView loginForm_info = findViewById(R.id.loginForm_info);
+        editText_username.setVisibility(View.INVISIBLE);
+        editText_password.setVisibility(View.INVISIBLE);
+        button_login.setVisibility(View.INVISIBLE);
+        button_loginWithGoogle.setVisibility(View.INVISIBLE);
+        button_logout.setVisibility(View.VISIBLE);
         loginForm_info.setText(
                 "Welcome, " + user.getUsername() + "!" + "\n" +
                         (user.isIbis() ? "You're an ibis." : "You're a sparrow."));
+    }
+
+    void showLoggedOutUser() {
+        editText_username.setVisibility(View.VISIBLE);
+        editText_password.setVisibility(View.VISIBLE);
+        button_login.setVisibility(View.VISIBLE);
+        button_loginWithGoogle.setVisibility(View.VISIBLE);
+        button_logout.setVisibility(View.INVISIBLE);
+        loginForm_info.setText("");
     }
 
     void showToast(String message) {
@@ -63,29 +84,91 @@ public class MainActivity extends AppCompatActivity
         editText_username = findViewById(R.id.loginForm_username);
         editText_password = findViewById(R.id.loginForm_password);
         button_login = findViewById(R.id.loginForm_button);
+        button_loginWithGoogle = findViewById(R.id.loginForm_buttonWithGoogle);
+        button_logout = findViewById(R.id.logout_button);
+        loginForm_info = findViewById(R.id.loginForm_info);
+
+        button_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String username = String.valueOf(editText_username.getText());
+                String password = String.valueOf(editText_password.getText());
+
+                UserController userController = UserController.getInstance();
+                User user = userController.authenticate(username, password);
+
+                if (user == null) {
+                    showToast("Username doesn't exist or password doesn't match.");
+
+                } else {
+                    showLoggedInUser(user);
+                }
+            }
+        });
+
+        button_loginWithGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent signInIntent = GSIClient.getSignInIntent();
+                startActivityForResult(signInIntent, 0);
+            }
+        });
+
+        button_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userController.logout();
+                showLoggedOutUser();
+            }
+        });
+
+        GoogleSignInOptions gso =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
+        GSIClient = GoogleSignIn.getClient(this, gso);
 
         User user = userController.getCurrentUser();
         if (user != null) {
             showLoggedInUser(user);
 
         } else {
-            button_login.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String username = String.valueOf(editText_username.getText());
-                    String password = String.valueOf(editText_password.getText());
+            showLoggedOutUser();
+        }
+    }
 
-                    UserController userController = UserController.getInstance();
-                    User user = userController.authenticate(username, password);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
-                    if (user == null) {
-                        showToast("Username doesn't exist or password doesn't match.");
+            try {
+                System.out.println(data);
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                User user = userController.authenticateWithGoogle(account);
 
-                    } else {
-                        showLoggedInUser(user);
-                    }
+                if (user == null) {
+                    showToast("Username doesn't exist or password doesn't match.");
+
+                } else {
+                    showLoggedInUser(user);
                 }
-            });
+
+            } catch (ApiException e) {
+                // The ApiException status code indicates the detailed failure reason.
+                // Please refer to the GoogleSignInStatusCodes class reference for more information.
+                System.out.println("Sign in failed: " + e.getStatusCode() + " - " + e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account != null) {
+            GSIClient.signOut();
         }
     }
 

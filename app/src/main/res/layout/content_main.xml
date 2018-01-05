@@ -24,6 +24,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <Button
+            android:id="@+id/logout_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign out" />
+
         <TextView
             android:id="@+id/loginForm_info"
             android:layout_width="wrap_content"
@@ -55,7 +61,13 @@
             android:id="@+id/loginForm_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Log in" />
+            android:text="Sign in" />
+
+        <Button
+            android:id="@+id/loginForm_buttonWithGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign in with Google" />
 
 
     </LinearLayout>
