@@ -66,6 +66,9 @@ class Users(Resource):
         user = from_json(args["user"])
         if (not "id" in user.keys()) or (user["id"] <= 0):
             user["id"] = id
+        for u in users.values():
+            if u["username"] == user["username"]:
+                return u
         users[user["id"]] = user
         self.save()
         return user
