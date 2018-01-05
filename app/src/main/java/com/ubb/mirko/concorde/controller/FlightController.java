@@ -15,7 +15,7 @@ public class FlightController {
     private static final FlightController ourInstance = newInstance();
     private FlightService service;
 
-    private static final FlightController newInstance() {
+    private static FlightController newInstance() {
         FlightRepository repository = new FlightRepositoryWithRoom();
         FlightService service = new FlightService(repository);
         return new FlightController(service);

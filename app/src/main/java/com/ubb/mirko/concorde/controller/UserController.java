@@ -24,7 +24,7 @@ public class UserController {
         return ourInstance;
     }
 
-    private static final UserController newInstance() {
+    private static UserController newInstance() {
         UserRepository repository = new UserRepositoryWithRoom();
         UserService service = new UserService(repository);
         return new UserController(service);
