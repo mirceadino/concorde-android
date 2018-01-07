@@ -66,8 +66,8 @@ public class AddFlightActivity extends AppCompatActivity {
 
     protected void sendNewFlightEmail(Flight flight) {
         String address = "mirceadino97@gmail.com";
-        String subject = "New flight on Concorde";
-        String body = "You can now fly from" +
+        String subject = "Adding new flight on Concorde";
+        String body = "You will fly from" +
                 flight.getSource() + " to " + flight.getDestination() + " for $" +
                 flight.getLastPrice() + ".";
         Intent sendMailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + Uri.encode(address)));
