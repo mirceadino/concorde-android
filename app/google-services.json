@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "760142305848",
+    "project_id": "firebase-concorde"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760142305848:android:78bb21c0da7fac29",
+        "android_client_info": {
+          "package_name": "com.ubb.mirko.concorde"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760142305848-n3tkvnitudpark9lsongsl404j6mtsqv.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "760142305848-8s12i63ft81dsoupj4vfc3qb1cflauv2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ubb.mirko.concorde",
+            "certificate_hash": "46a8b81046e070e7f9ddb291304e35e3fdf485b9"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcNXqGUew11Ryp074g8HXsBSNZ5-PGT2w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

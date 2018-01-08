@@ -23,47 +23,37 @@ public class EditFlightActivity extends AppCompatActivity {
     private NumberPicker numberPicker_pricePicker;
     private Button button_edit;
     private Button button_delete;
-    private int flightId;
-    private Flight initialFlight;
+    private Flight flight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_flight);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Get edit texts and buttons from layout.
-        editText_source = (EditText) findViewById(R.id.editFlight_source);
-        editText_destination = (EditText) findViewById(R.id.editFlight_destination);
-        numberPicker_pricePicker = (NumberPicker) findViewById(R.id.editFlight_pricePicker);
-        button_edit = (Button) findViewById(R.id.editFlight_button_edit);
-        button_delete = (Button) findViewById(R.id.editFlight_button_delete);
+        editText_source = findViewById(R.id.editFlight_source);
+        editText_destination = findViewById(R.id.editFlight_destination);
+        numberPicker_pricePicker = findViewById(R.id.editFlight_pricePicker);
+        button_edit = findViewById(R.id.editFlight_button_edit);
+        button_delete = findViewById(R.id.editFlight_button_delete);
 
         // Get flight from intent.
-        initialFlight = (Flight) getIntent().getExtras().getSerializable("currentFlight");
-        System.out.println(initialFlight.toString());
+        flight = (Flight) getIntent().getExtras().getSerializable("flight");
 
         // Fill the layout with the information from intent.
-        flightId = initialFlight.getId();
-        editText_source.setText(initialFlight.getSource());
-        editText_destination.setText(initialFlight.getDestination());
+        editText_source.setText(flight.getSource());
+        editText_destination.setText(flight.getDestination());
         numberPicker_pricePicker.setMinValue(0);
         numberPicker_pricePicker.setMaxValue(300);
-        numberPicker_pricePicker.setValue(initialFlight.getLastPrice());
+        numberPicker_pricePicker.setValue(flight.getLastPrice());
         numberPicker_pricePicker.setWrapSelectorWheel(true);
         button_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get the modified flight.
                 Flight flight = getEditedFlight();
-
-                // Intent to modify the flight.
-                Intent modifyIntent = new Intent(EditFlightActivity.this, ManageFlightsActivity.class);
-                modifyIntent.putExtra("addedFlight", flight);
-                startActivity(modifyIntent);
+                modifyFlight(flight);
             }
         });
 
@@ -75,13 +65,8 @@ public class EditFlightActivity extends AppCompatActivity {
                 builder.setMessage("Are you sure you want to delete?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // Get the modified flight.
                                 Flight flight = getEditedFlight();
-
-                                // Intent to modify the flight.
-                                Intent deleteIntent = new Intent(EditFlightActivity.this, ManageFlightsActivity.class);
-                                deleteIntent.putExtra("deletedFlight", flight);
-                                startActivity(deleteIntent);
+                                deleteFlight(flight);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -96,9 +81,23 @@ public class EditFlightActivity extends AppCompatActivity {
     }
 
     protected Flight getEditedFlight() {
-        initialFlight.setSource(String.valueOf(editText_source.getText()));
-        initialFlight.setDestination(String.valueOf(editText_destination.getText()));
-        initialFlight.setPrice(numberPicker_pricePicker.getValue());
-        return initialFlight;
+        flight.setSource(String.valueOf(editText_source.getText()));
+        flight.setDestination(String.valueOf(editText_destination.getText()));
+        flight.setPrice(numberPicker_pricePicker.getValue());
+        return flight;
+    }
+
+    protected void modifyFlight(Flight flight) {
+        Intent modifyIntent = new Intent(this, ManageFlightsActivity.class);
+        modifyIntent.putExtra("addedFlight", flight);
+        setResult(123, modifyIntent);
+        finish();
+    }
+
+    protected void deleteFlight(Flight flight) {
+        Intent deleteIntent = new Intent(this, ManageFlightsActivity.class);
+        deleteIntent.putExtra("deletedFlight", flight);
+        setResult(123, deleteIntent);
+        finish();
     }
 }

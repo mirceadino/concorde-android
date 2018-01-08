@@ -27,34 +27,31 @@ public class DetailsFlightActivity extends AppCompatActivity {
     private EditText detailsText_price;
     private GraphView graphView_graph;
     private Button button_cancel;
-    private int flightId;
-    private Flight currentFlight;
+    private Flight flight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_flight);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get details texts and buttons from layout.
-        detailsText_source = (EditText) findViewById(R.id.detailsFlight_source);
-        detailsText_destination = (EditText) findViewById(R.id.detailsFlight_destination);
-        detailsText_price = (EditText) findViewById(R.id.detailsFlight_price);
-        graphView_graph = (GraphView) findViewById(R.id.detailsFlight_graph);
-        button_cancel = (Button) findViewById(R.id.detailsFlight_button_cancel);
+        detailsText_source = findViewById(R.id.detailsFlight_source);
+        detailsText_destination = findViewById(R.id.detailsFlight_destination);
+        detailsText_price = findViewById(R.id.detailsFlight_price);
+        graphView_graph = findViewById(R.id.detailsFlight_graph);
+        button_cancel = findViewById(R.id.detailsFlight_button_cancel);
 
         // Get flight from intent.
-        currentFlight = (Flight) getIntent().getExtras().getSerializable("currentFlight");
-        System.out.println(currentFlight.toString());
+        flight = (Flight) getIntent().getExtras().getSerializable("flight");
 
         // Fill the layout with the information from intent.
-        flightId = currentFlight.getId();
-        detailsText_source.setText(currentFlight.getSource());
-        detailsText_destination.setText(currentFlight.getDestination());
-        detailsText_price.setText("" + currentFlight.getLastPrice());
+        detailsText_source.setText(flight.getSource());
+        detailsText_destination.setText(flight.getDestination());
+        detailsText_price.setText("" + flight.getLastPrice());
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,11 +65,10 @@ public class DetailsFlightActivity extends AppCompatActivity {
 
     protected void buildGraph() {
         List<DataPoint> dataPointList = new ArrayList<>();
-        for (int i = 0; i < currentFlight.getPrice().size(); ++i) {
-            dataPointList.add(new DataPoint(2 * i + 0, currentFlight.getPrice().get(i)));
-            dataPointList.add(new DataPoint(2 * i + 1, currentFlight.getPrice().get(i)));
+        dataPointList.add(new DataPoint(0, 0));
+        for (int i = 0; i < flight.getPrice().size(); ++i) {
+            dataPointList.add(new DataPoint(i + 1, flight.getPrice().get(i)));
         }
-        System.out.println(dataPointList);
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointList.toArray(new DataPoint[0]));
         graphView_graph.addSeries(series);

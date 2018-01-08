@@ -1,8 +1,10 @@
 package com.ubb.mirko.concorde.controller;
 
 import com.ubb.mirko.concorde.model.Flight;
+import com.ubb.mirko.concorde.observer.Observer;
 import com.ubb.mirko.concorde.repository.FlightRepository;
 import com.ubb.mirko.concorde.repository.FlightRepositoryWithRoom;
+import com.ubb.mirko.concorde.service.FlightService;
 
 import java.util.List;
 
@@ -11,26 +13,36 @@ import java.util.List;
  */
 
 public class FlightController {
-    private static final FlightController ourInstance = new FlightController(new FlightRepositoryWithRoom());
-    private FlightRepository repository_;
+    private static final FlightController ourInstance = newInstance();
+    private FlightService service;
+
+    private static FlightController newInstance() {
+        FlightRepository repository = new FlightRepositoryWithRoom();
+        FlightService service = new FlightService(repository);
+        return new FlightController(service);
+    }
 
     public static FlightController getInstance() {
         return ourInstance;
     }
 
-    public FlightController(FlightRepository repository) {
-        repository_ = repository;
+    public FlightController(FlightService service) {
+        this.service = service;
     }
 
     public List<Flight> getAllFlights() {
-        return repository_.get();
+        return service.getAllFlights();
     }
 
     public void addFlight(Flight flight) {
-        repository_.add(flight);
+        service.addFlight(flight);
     }
 
     public void removeFlight(Flight deletedFlight) {
-        repository_.remove(deletedFlight);
+        service.removeFlight(deletedFlight);
+    }
+
+    public void subscribe(Observer observer){
+        service.attach(observer);
     }
 }

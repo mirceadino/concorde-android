@@ -1,12 +1,10 @@
 # concorde-android
 :airplane: faster than the speed of sound
 
-**Android | [React Native](https://github.com/mirceadino/concorde-react-native)** 
+**Android | [React Native](https://github.com/mirceadino/concorde-react-native) | [server](https://github.com/mirceadino/concorde-server)**
 
 **Features:**
-- create an account
+- sign in with Google
 - two types of users: **sparrows** and **ibises** 
-- find flights between two locations
 - get stats on the price of the flights
-- save favourite flights
 - for ibises: add, remove and edit flights
